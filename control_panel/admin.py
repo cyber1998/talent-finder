@@ -23,6 +23,7 @@ class AppUserAdmin(admin.ModelAdmin):
     ]
 
     inlines = [AppUserSettingInline]
+    save_as = True
 
 admin.site.unregister(User)
 admin.site.register(AppUser, AppUserAdmin)
