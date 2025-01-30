@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INTERNAL_APPS = [
     'base',
-    'controlpanel',
+    'control_panel',
 ]
 
 THIRD_PARTY_APPS = [

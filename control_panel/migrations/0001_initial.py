@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
                 ('is_push_notification_enabled', models.BooleanField(default=True)),
                 ('dark_mode', models.BooleanField(default=False)),
                 ('font_size', models.PositiveSmallIntegerField(default=14)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='controlpanel.appuser')),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='control_panel.appuser')),
             ],
             options={
                 'verbose_name': 'App User Setting',

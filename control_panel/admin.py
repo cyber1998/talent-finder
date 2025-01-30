@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 
-from controlpanel.models import AppUserSetting, AppUser
+from control_panel.models import AppUserSetting, AppUser
 
 
 # Register your models here.

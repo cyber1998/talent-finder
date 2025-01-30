@@ -1,6 +1,6 @@
 from django.core.management import BaseCommand
 
-from controlpanel.models import AppUser
+from control_panel.models import AppUser
 
 
 class Command(BaseCommand):
