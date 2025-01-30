@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INTERNAL_APPS = [
     'base',
     'control_panel',
+    'talent',
 ]
 
 THIRD_PARTY_APPS = [
