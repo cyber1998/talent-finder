@@ -38,6 +38,7 @@ INTERNAL_APPS = [
 
 THIRD_PARTY_APPS = [
     'django_extensions',
+    'graphene_django',
 ]
 
 DJANGO_APPS = [
@@ -137,3 +138,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+GRAPHENE = {
+    'SCHEMA': 'talent_finder.schema.schema'
+}
+
+SHELL = 'ipython'
