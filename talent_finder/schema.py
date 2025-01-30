@@ -1,17 +1,15 @@
 import graphene
-from talent.schema import Query as TalentQuery
-from control_panel.schema import (
-    Query as ControlPanelQuery,
-    Mutation as TalentMutation
-)
-
+from talent import schema as TalentSchema
+from control_panel import schema as ControlPanelSchema
 class Query(
-    TalentQuery,
-    ControlPanelQuery,
+    ControlPanelSchema.Query,
+    TalentSchema.Query,
     graphene.ObjectType):
     pass
 
-class Mutation(TalentMutation, graphene.ObjectType):
+class Mutation(
+    ControlPanelSchema.Mutation,
+    graphene.ObjectType):
     pass
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
