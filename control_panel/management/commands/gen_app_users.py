@@ -1,6 +1,6 @@
 from django.core.management import BaseCommand
 
-from control_panel.models import AppUser
+from control_panel.models import AppUser, AppUserSetting
 
 
 class Command(BaseCommand):
@@ -14,7 +14,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Create superuser
         if not AppUser.objects.filter(username=options['username']).exists():
-            AppUser.objects.create_superuser(username=options['username'], password=options['password'], email=options['email'])
+            user = AppUser.objects.create_superuser(username=options['username'], password=options['password'], email=options['email'])
+            settings = AppUserSetting.objects.create(
+               user=user
+            )
             self.stdout.write(self.style.SUCCESS('Superuser created successfully'))
         else:
             self.stdout.write(self.style.ERROR('Superuser already exists'))
