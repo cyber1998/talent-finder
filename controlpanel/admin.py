@@ -6,7 +6,6 @@ from controlpanel.models import AppUserSetting, AppUser
 
 # Register your models here.
 
-# @admin.register(AppUserSetting)
 class AppUserSettingInline(admin.StackedInline):
     model = AppUserSetting
     extra = 1
@@ -20,7 +19,7 @@ class AppUserAdmin(admin.ModelAdmin):
     fieldsets = [
         ('User Info', {'fields': ['username', 'email', 'password']}),
         ('Permissions', {'fields': ['is_active', 'is_staff', 'is_superuser']}),
-        ('Important dates', {'fields': ['last_login', 'date_joined']}),
+        ('Important dates', {'fields': ['last_login', 'date_joined', 'created_at', 'updated_at']}),
     ]
 
     inlines = [AppUserSettingInline]
