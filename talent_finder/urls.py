@@ -18,7 +18,14 @@ from django.contrib import admin
 from django.urls import path
 from graphene_django.views import GraphQLView
 
+from talent.views import upload_resume
+
+rest_urlpatterns = [
+    path('api/v1/upload-resume/', upload_resume),
+]
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('graphql/', GraphQLView.as_view(graphiql=True)),
+    *rest_urlpatterns,
 ]
