@@ -1,16 +1,11 @@
-import pinecone
-from dotenv import load_dotenv
 import os
 
-load_dotenv('.env')
+from pinecone import Pinecone
+
 INDEX = 'resume-recommender'
 
-pinecone.init(api_key=os.environ.get('PINECONE_API_KEY'), environment='us-east-1')
+pinecone_obj = Pinecone(api_key=os.getenv("PINECONE_API_KEY"), environment=os.getenv("PINECONE_ENVIRONMENT"))
 
-if INDEX not in pinecone.list_indexes():
-    pinecone.create_index(name=INDEX, metric='cosine', shards=1, dimension=1536)
+existing_indexes = pinecone_obj.list_indexes()
 
-index = pinecone.Index(INDEX, host="https://resume-recommender-te9leun.svc.aped-4627-b74a.pinecone.io")
-
-
-
+index = pinecone_obj.Index(INDEX, host="https://resume-recommender-te9leun.svc.aped-4627-b74a.pinecone.io")

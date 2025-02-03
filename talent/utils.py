@@ -3,10 +3,10 @@ from langchain.text_splitter import CharacterTextSplitter
 
 def extract_text_from_pdf(pdf_file):
     with open(pdf_file, 'rb') as file:
-        reader = PyPDF2.PdfFileReader(file)
+        reader = PyPDF2.PdfReader(file)
         text = ''
-        for page_num in range(reader.numPages):
-            text += reader.getPage(page_num).extract_text()
+        for page_num in range(len(reader.pages)):
+            text += reader.pages[page_num].extract_text()
 
     return text
 
