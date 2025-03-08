@@ -26,8 +26,8 @@ def upload_resume(request):
 
     if os.environ.get('EXEC_ENV') == 'local':
         # Create a resumes directory if it does not exist. Later we can change this to a S3 bucket.
-        if not os.path.exists('files'):
-            os.makedirs('files')
+        if not os.path.exists('resumes'):
+            os.makedirs('resumes')
 
         with open(f'resumes/{resume_file.name}', 'wb') as f:
             f.write(resume_file.read())
