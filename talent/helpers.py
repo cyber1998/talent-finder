@@ -1,4 +1,5 @@
 import io
+import json
 
 from talent.embeddings.embedder import generate_embeddings, store_embeddings_in_pinecone, \
     get_answer
@@ -25,7 +26,8 @@ def get_resumes(query, top_k=1):
     Get resumes from Pinecone
     """
     try:
-        answers = get_answer(query)
-        return answers
+        answers = get_answer(query)['answer']
+        answers_json = json.loads(answers)
+        return answers_json
     except Exception as e:
         return None

@@ -1,4 +1,5 @@
 import os
+import uuid
 
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
@@ -23,7 +24,7 @@ def store_embeddings_in_pinecone(chunks, embeddings):
     vectors = []
 
     for i, (chunk, embedding) in enumerate(zip(chunks, embeddings)):
-        vectors.append((str(i), embedding, {"text": chunk}))
+        vectors.append((str(uuid.uuid4()), embedding, {"text": chunk}))
 
     PineconeIndex.upsert(vectors)
 
@@ -40,20 +41,26 @@ def pinecone_retriever(query, index, embeddings, top_k=5):
     return pinecone_to_documents(results)
 
 def get_answer(input):
-    llm = OpenAI(temperature=0.0)
+    llm = OpenAI(temperature=0.0, max_tokens=2048)
     # Create Pinecone retriever instance
     vector_store = PineconeVectorStore(index=PineconeIndex, embedding=embeddings)
-    system_prompt = """You are a highly intelligent system whose only job is to take in the query of a user, search through
-    the data and return a JSON list of relevant candidates with respect to the query being made. If you are asked anything else,
-    please respond with an empty list. If you do find relevant candidates, then use the following JSON format to return them:
-    first_name, last_name, email, relevant_skills, match_percentage, experiences. If you do not find the email of the candidate,
-    ignore that candidate.
+    system_prompt = """You are a highly intelligent AI bot named Stanley who is an expert in hiring senior software engineers.
+    {context}
     """
     prompt = ChatPromptTemplate.from_messages(
         [
             ('system', system_prompt),
-            ('human', "{input}"),
-            ('assistant', "Here are the relevant candidates I found for you: {context}"),
+            ('human', """"{input}. Structure the response as a list of JSON objects with the following keys:
+            
+            first_name: str,
+            last_name: str,
+            email: str,
+            relevant_skills: List[str],
+            experiences: List[str], # Summarized experiences of the candidate
+            match_percentage: str]
+            
+            If no email is found for the candidate, ignore that candidate. Limit the results to 10 candidates.
+            """),
         ]
     )
 
