@@ -101,4 +101,6 @@ Response:
 ```
 
 ## Contributors
-- [Cyber]()
+<a href="https://github.com/cyber1998/talent-finder/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=cyber1998/talent-finder" />
+</a>
