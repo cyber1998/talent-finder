@@ -22,8 +22,14 @@ def upload_resume(request):
         return JSONResponse({'error': 'Only PDF files are supported'}, status=400)
 
     # store the file under the files directory / AWS S3
+
+
     if os.environ.get('EXEC_ENV') == 'local':
-        with open(f'files/{resume_file.name}', 'wb') as f:
+        # Create a resumes directory if it does not exist. Later we can change this to a S3 bucket.
+        if not os.path.exists('files'):
+            os.makedirs('files')
+
+        with open(f'resumes/{resume_file.name}', 'wb') as f:
             f.write(resume_file.read())
             f_path = f.name
 
