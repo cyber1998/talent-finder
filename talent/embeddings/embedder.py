@@ -2,7 +2,6 @@ import os
 
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
-from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
 
@@ -11,7 +10,8 @@ from talent.embeddings.pinecone_client import index as PineconeIndex
 from langchain_pinecone import PineconeVectorStore
 
 from langchain.chains import RetrievalQA
-from langchain.llms import OpenAI
+from langchain_community.llms import OpenAI
+from langchain_openai import OpenAIEmbeddings
 
 embeddings = OpenAIEmbeddings(model="text-embedding-ada-002", openai_api_key=os.environ["OPENAI_API_KEY"])
 
@@ -39,7 +39,7 @@ def pinecone_retriever(query, index, embeddings, top_k=5):
     results = index.query(vector=query_embedding, top_k=top_k, include_metadata=True)
     return pinecone_to_documents(results)
 
-def get_answer(query):
+def get_answer(input):
     llm = OpenAI(temperature=0.0)
     # Create Pinecone retriever instance
     vector_store = PineconeVectorStore(index=PineconeIndex, embedding=embeddings)
@@ -52,7 +52,7 @@ def get_answer(query):
     prompt = ChatPromptTemplate.from_messages(
         [
             ('system', system_prompt),
-            ('human', "{query}"),
+            ('human', "{input}"),
             ('assistant', "Here are the relevant candidates I found for you: {context}"),
         ]
     )
@@ -63,11 +63,11 @@ def get_answer(query):
     question_answer_chain = create_stuff_documents_chain(llm, prompt)
     chain = create_retrieval_chain(retriever, question_answer_chain)
 
-    retrieved_docs = retriever.get_relevant_documents(query)
-    context = "\n".join([doc.page_content for doc in retrieved_docs])
+    # retrieved_docs = retriever.get_relevant_documents(query)
+    # context = "\n".join([doc.page_content for doc in retrieved_docs])
 
 
-    answer = chain.invoke({"query": query, "context": context})
+    answer = chain.invoke({"input": input})
 
     return answer
 
